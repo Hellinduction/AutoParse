@@ -69,7 +69,7 @@
         return $result;
     }
 
-    function post_process($post_processor, $value, $source = null, $parts): string {
+    function post_process($post_processor, $value, $source = null, $parts): mixed {
             switch ($post_processor) {
                 case 'json':
                 case 'pjson':
