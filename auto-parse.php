@@ -18,7 +18,7 @@
      * - <user:username/> - Assuming our user variable is an object/array and has a key called 'username', this would be replaced with the the that value.
      * 
      * It is possible to chain variables together when accessing sub-variables by their key, like when they are in an array or object.
-     * It is also possible to call functions on variables by apppending `()` to the end of the variable name.
+     * It is also possible to call functions on variables by apppending `()` to the end of the variable name. (Functions called this way are unable to produce output to the browser since the buffer has already been processed).
      * If you append "::json" to the end of a tag, it will convert whatever the primitive/object/array is to JSON
      * The actual value of the variable is sanitized by default, but you can disable this by appending a `~` to the end of the tag before the slash.
      */
@@ -109,15 +109,7 @@
             return $value;
     }
 
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-
-    ob_start(function ($buffer) {
-        if (str_contains(__DIR__, "includes")) {
-            chdir(__DIR__ . "/..");
-        }
-
+    function parse(mixed $buffer): mixed {
         return preg_replace_callback(
             '/<([a-zA-Z0-9_\-:()\'",\s]+?)(?:::([a-zA-Z\-]+))?(~?)\/>/',
             function ($matches) {
@@ -221,5 +213,17 @@
             },
             $buffer
         );
+    }
+
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    ob_start(function ($buffer) {
+        if (str_contains(__DIR__, "includes")) {
+            chdir(__DIR__ . "/..");
+        }
+
+        return parse($buffer);
     });
 ?>
