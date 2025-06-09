@@ -97,7 +97,7 @@
                 case 'unset':
                     if ($source === 'session') {
                         $ref = &$_SESSION;
-                        $last = array_pop($ref);
+                        $last = array_pop($parts);
                         
                         foreach ($parts as $segment) {
                             $ref = &$ref[$segment];
