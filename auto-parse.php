@@ -10,7 +10,7 @@
      * To start using this, all you have to do is include this file at the top of your PHP script (or after you have called session_start())
      * This can be done via the following line: include_one "includes/auto-parse.php";
      * Global variables are already accessible, however in order to register a local variable for later reference, you must do register_local_variable($var, $ref)
-     * It is important to use "global $var;" when redeclaring a global variable in order for this file to get the latest value for that variable.
+     * It is important to use "global $var;" when accessing a global variable from a different scope.
      * 
      * In order to actually access PHP variables in HTML, you can do the following examples:
      * - <session:userid/> - A simple example that would replace this element with whatever the value of $_SESSION['userid'] is (assuming it exists).
@@ -95,10 +95,16 @@
                     $value = is_string($value) ? strtolower($value) : '';
                     break;
                 case 'unset':
-                    if ($source === 'session' && count($parts) === 1) {
-                        unset($_SESSION[$parts[0]]);
+                    if ($source === 'session') {
+                        $ref = &$_SESSION;
+                        $last = array_pop($ref);
+                        
+                        foreach ($parts as $segment) {
+                            $ref = &$ref[$segment];
+                        }
+
+                        unset($ref[$last]);
                     }
-                    $value = '';
                     break;
                 case null:
                     break;
