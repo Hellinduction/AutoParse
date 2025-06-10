@@ -15,10 +15,10 @@
      * In order to actually access PHP variables in HTML, you can do the following examples:
      * - <session:userid/> - A simple example that would replace this element with whatever the value of $_SESSION['userid'] is (assuming it exists).
      * - <user/> - Say if you had a global variable called $user, this would simply display the contents of that variable.
-     * - <user:username/> - Assuming our user variable is an object/array and has a key called 'username', this would be replaced with the the that value.
+     * - <user:username/> - Assuming our user variable is an object/array and has a key called 'username', this would be replaced with that value.
      * 
      * It is possible to chain variables together when accessing sub-variables by their key, like when they are in an array or object.
-     * It is also possible to call functions on variables by apppending `()` to the end of the variable name. (Functions called this way are unable to produce output to the browser since the buffer has already been processed).
+     * It is also possible to call PHP functions by apppending `()` to the end of the function name. (Functions called this way are unable to produce output to the browser since the buffer has already been processed).
      * If you append "::json" to the end of a tag, it will convert whatever the primitive/object/array is to JSON
      * The actual value of the variable is sanitized by default, but you can disable this by appending a `~` to the end of the tag before the slash.
      */
